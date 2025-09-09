@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
   schedule:
     - # daily job at 01:00 with  UTC time
-      cron: "0 1 * * 1-5"
+     cron: "0 1 * * *"   # UTC 01:00 = 台北 09:00
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -29,10 +29,11 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: 18
-      - name: Preparing
-        run: |
-          npm install --global yarn && yarn install
+      #- name: Preparing
+      #  run: |
+      #    npm install --global yarn && yarn install
+      - name: Install dependencies
+        run: yarn install
       - name: Execute
-        run: |
-          node .
+        run: node .
 #test
