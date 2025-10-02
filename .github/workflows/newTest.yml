@@ -1,2 +1,29 @@
-uses: actions/checkout@v4
-uses: actions/setup-node@v4
+name: Today Status Check
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 1 * * *"   # 每天 UTC 01:00 執行（台北 09:00）
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    env:
+      FNG_MIN: ${{ secrets.FNG_MIN }}
+      FNG_MAX: ${{ secrets.FNG_MAX }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 18
+
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      - name: Execute script
+        run: node .
